@@ -6,14 +6,45 @@ Reusable AI agents and GitHub Actions workflows for Angular projects.
 
 ---
 
+## Resuming work with Kiro
+
+Open a terminal in this directory and run `kiro-cli chat`. The file `.kiro/steering/agents-project.md` is automatically loaded, giving Kiro full context about the squad without any manual setup. See `CONTEXT.md` for the full project history and decision log.
+
+---
+
 ## Agents
 
+### Coordination
 | Agent | Role | File |
 |-------|------|------|
-| Project Manager | Planning — user stories, branch scoping | [project-manager.md](project-manager.md) |
-| Architect | Planning — system design, data models, security | [architect.md](architect.md) |
-| Senior Engineer | Execution — Angular/TypeScript code, tests | [senior-engineer.md](senior-engineer.md) |
-| UX Designer | Execution — UI design, accessibility, components | [ux-designer.md](ux-designer.md) |
+| Orchestrator | Routes work, tracks progress, coordinates the squad | [orchestrator.md](orchestrator.md) |
+
+### Planning
+| Agent | Role | File |
+|-------|------|------|
+| Project Manager | User stories, branch scoping, acceptance criteria | [project-manager.md](project-manager.md) |
+| Architect | System design, data models, security | [architect.md](architect.md) |
+
+### Execution
+| Agent | Role | File |
+|-------|------|------|
+| Senior Engineer | Angular/TypeScript code, tests, commits | [senior-engineer.md](senior-engineer.md) |
+| UX Designer | Accessible, mobile-first UI | [ux-designer.md](ux-designer.md) |
+| QA Engineer | Test strategy, E2E, bug triage | [qa-engineer.md](qa-engineer.md) |
+| Code Reviewer | PR reviews, best practices enforcement | [code-reviewer.md](code-reviewer.md) |
+
+### Operations
+| Agent | Role | File |
+|-------|------|------|
+| DevOps Engineer | CI/CD, Firebase deploys, rollback | [devops-engineer.md](devops-engineer.md) |
+| Git Manager | Day-to-day git workflow, branching, commits, stash | [git-manager.md](git-manager.md) |
+
+### Support
+| Agent | Role | File |
+|-------|------|------|
+| Researcher | Angular/Firebase updates, library evaluation | [researcher.md](researcher.md) |
+| Technical Writer | READMEs, component docs, changelogs | [technical-writer.md](technical-writer.md) |
+| Security Specialist | OWASP, dependency scans, Firestore rules | [security-specialist.md](security-specialist.md) |
 
 The hierarchy is defined in [`agents.json`](agents.json) and visualized on the dashboard.
 

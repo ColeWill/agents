@@ -9,12 +9,17 @@
     body { font-family: system-ui, sans-serif; background: #f5f5f5; color: #222; padding: 2rem; }
     h1 { font-size: 1.5rem; margin-bottom: 0.25rem; }
     .subtitle { color: #666; margin-bottom: 2rem; font-size: 0.9rem; }
-    #diagram { background: #fff; border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem; overflow-x: auto; }
+    .panel { background: #fff; border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem; overflow-x: auto; }
     h2 { font-size: 1rem; font-weight: 600; margin-bottom: 1rem; color: #444; text-transform: uppercase; letter-spacing: 0.05em; }
+    .group-header { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #888; margin: 1.5rem 0 0.5rem; }
+    .group-header:first-child { margin-top: 0; }
     .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
     .card { background: #fff; border-radius: 8px; padding: 1.25rem; border-left: 4px solid #ccc; }
+    .card.coordination { border-color: #9c27b0; }
     .card.planning { border-color: #1a73e8; }
     .card.execution { border-color: #34a853; }
+    .card.operations { border-color: #f57c00; }
+    .card.support { border-color: #00897b; }
     .card-name { font-weight: 600; margin-bottom: 0.25rem; }
     .card-desc { font-size: 0.85rem; color: #555; margin-bottom: 0.75rem; }
     .caps { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.75rem; }
@@ -30,12 +35,18 @@
   <h1>Agent Hierarchy</h1>
   <p class="subtitle">Reusable agents for Angular projects — <a href="https://github.com/ColeWill/agents">ColeWill/agents</a></p>
 
-  <div id="diagram">
+  <div class="panel">
+    <h2>Hierarchy</h2>
     <div class="mermaid" id="mermaid-chart"></div>
   </div>
 
-  <h2>Agents</h2>
-  <div class="cards" id="cards"></div>
+  <div class="panel">
+    <h2>Squad Overview — Feature Flow</h2>
+    <div class="mermaid" id="flow-chart"></div>
+  </div>
+
+  <h2>Squad</h2>
+  <div id="squad"></div>
 
   <script src="agents-data.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
@@ -43,58 +54,52 @@
     mermaid.initialize({ startOnLoad: false, theme: 'default' });
 
     const data = AGENTS_DATA;
+    const GROUP_ORDER = ['coordination', 'planning', 'execution', 'operations', 'support'];
+    const GROUP_LABELS = { coordination: 'Coordination', planning: 'Planning', execution: 'Execution', operations: 'Operations', support: 'Support' };
+
     const groups = {};
     data.agents.forEach(a => {
       if (!groups[a.group]) groups[a.group] = [];
       groups[a.group].push(a);
     });
 
-    // Build Mermaid diagram string
+    // Hierarchy diagram
     let diagram = 'graph TD\n';
-
-    if (data.orchestrators.length) {
-      data.orchestrators.forEach(o => {
-        diagram += `  ${o.id}["🎯 ${o.name}"]\n`;
-      });
-    }
-
-    Object.entries(groups).forEach(([group, agents]) => {
-      const label = group.charAt(0).toUpperCase() + group.slice(1);
-      diagram += `  subgraph ${label}\n`;
-      agents.forEach(a => {
-        diagram += `    ${a.id}["${a.name}"]\n`;
-      });
+    GROUP_ORDER.forEach(group => {
+      if (!groups[group]) return;
+      diagram += `  subgraph ${GROUP_LABELS[group]}\n`;
+      groups[group].forEach(a => { diagram += `    ${a.id}["${a.name}"]\n`; });
       diagram += `  end\n`;
     });
-
-    // Connect orchestrators to all agents
-    if (data.orchestrators.length) {
-      data.orchestrators.forEach(o => {
-        data.agents.forEach(a => {
-          diagram += `  ${o.id} --> ${a.id}\n`;
-        });
-      });
-    }
-
-    // Add click handlers
-    data.agents.forEach(a => {
-      diagram += `  click ${a.id} "${a.mdFile}" _blank\n`;
-    });
-
+    data.agents.forEach(a => { diagram += `  click ${a.id} "${a.mdFile}" _blank\n`; });
     document.getElementById('mermaid-chart').textContent = diagram;
-    mermaid.run({ nodes: [document.getElementById('mermaid-chart')] });
 
-    // Render cards
-    const cardsEl = document.getElementById('cards');
-    data.agents.forEach(a => {
-      cardsEl.innerHTML += `
-        <div class="card ${a.group}">
-          <div class="card-name">${a.name}</div>
-          <div class="card-desc">${a.description}</div>
-          <div class="caps">${a.capabilities.map(c => `<span class="cap">${c}</span>`).join('')}</div>
-          <span class="badge ${a.status}">${a.status}</span>
-          <br><a class="card-link" href="${a.mdFile}">View prompt →</a>
-        </div>`;
+    // Feature flow diagram
+    document.getElementById('flow-chart').textContent =
+      'graph LR\n' +
+      '  orchestrator["Orchestrator"] --> pm["Project Manager"]\n' +
+      '  pm --> architect["Architect"]\n' +
+      '  architect --> engineer["Senior Engineer"]\n' +
+      '  engineer --> reviewer["Code Reviewer"]\n' +
+      '  reviewer --> qa["QA Engineer"]\n' +
+      '  qa --> devops["DevOps Engineer"]';
+
+    mermaid.run({ nodes: [document.getElementById('mermaid-chart'), document.getElementById('flow-chart')] });
+
+    // Render grouped cards
+    const squadEl = document.getElementById('squad');
+    GROUP_ORDER.forEach(group => {
+      if (!groups[group]) return;
+      squadEl.innerHTML += `<div class="group-header">${GROUP_LABELS[group]}</div><div class="cards">` +
+        groups[group].map(a => `
+          <div class="card ${a.group}">
+            <div class="card-name">${a.name}</div>
+            <div class="card-desc">${a.description}</div>
+            <div class="caps">${a.capabilities.map(c => `<span class="cap">${c}</span>`).join('')}</div>
+            <span class="badge ${a.status}">${a.status}</span>
+            <br><a class="card-link" href="${a.mdFile}">View prompt →</a>
+          </div>`).join('') +
+        '</div>';
     });
   </script>
 </body>
