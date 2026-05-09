@@ -36,6 +36,78 @@
       "capabilities": ["UI design", "accessibility", "component guidelines", "responsive design"],
       "mdFile": "ux-designer.md",
       "status": "active"
+    },
+    {
+      "id": "orchestrator",
+      "name": "Orchestrator",
+      "group": "coordination",
+      "description": "Coordinates all agents — breaks goals into tasks, routes work, tracks progress, and reports status.",
+      "capabilities": ["workflow orchestration", "task routing", "progress tracking", "agent coordination", "blocker resolution"],
+      "mdFile": "orchestrator.md",
+      "status": "active"
+    },
+    {
+      "id": "qa-engineer",
+      "name": "QA Engineer",
+      "group": "execution",
+      "description": "Designs and executes test strategies — unit, integration, and E2E. Validates acceptance criteria and triages bugs.",
+      "capabilities": ["test automation", "Cypress", "Playwright", "unit testing", "E2E testing", "bug triage", "test coverage"],
+      "mdFile": "qa-engineer.md",
+      "status": "active"
+    },
+    {
+      "id": "code-reviewer",
+      "name": "Code Reviewer",
+      "group": "execution",
+      "description": "Reviews PRs for Angular best practices, TypeScript correctness, performance, security, and accessibility.",
+      "capabilities": ["code review", "Angular best practices", "TypeScript linting", "performance audit", "security scan"],
+      "mdFile": "code-reviewer.md",
+      "status": "active"
+    },
+    {
+      "id": "devops-engineer",
+      "name": "DevOps Engineer",
+      "group": "operations",
+      "description": "Manages CI/CD pipelines, Firebase deployments, GitHub Actions, environment config, and rollback strategies.",
+      "capabilities": ["CI/CD", "GitHub Actions", "Firebase deployment", "infrastructure", "monitoring", "rollback"],
+      "mdFile": "devops-engineer.md",
+      "status": "active"
+    },
+    {
+      "id": "git-manager",
+      "name": "Git Manager",
+      "group": "operations",
+      "description": "Handles day-to-day git operations — status, branching, commits, stash, and conflict resolution across repos.",
+      "capabilities": ["git workflow", "branching", "commits", "stash", "conflict resolution", "cross-repo status"],
+      "mdFile": "git-manager.md",
+      "status": "active"
+    },
+    {
+      "id": "researcher",
+      "name": "Researcher",
+      "group": "support",
+      "description": "Monitors Angular/Firebase releases, security advisories, and evaluates new libraries and performance techniques.",
+      "capabilities": ["Angular updates", "Firebase features", "security advisories", "library evaluation", "performance research"],
+      "mdFile": "researcher.md",
+      "status": "active"
+    },
+    {
+      "id": "technical-writer",
+      "name": "Technical Writer",
+      "group": "support",
+      "description": "Writes and maintains READMEs, component docs, API references, and changelogs.",
+      "capabilities": ["README", "component documentation", "API reference", "changelog", "technical writing"],
+      "mdFile": "technical-writer.md",
+      "status": "active"
+    },
+    {
+      "id": "security-specialist",
+      "name": "Security Specialist",
+      "group": "support",
+      "description": "Runs security scans, reviews Firestore rules, checks dependencies, and enforces OWASP compliance.",
+      "capabilities": ["OWASP", "dependency scanning", "Firestore rules", "secrets detection", "security audit"],
+      "mdFile": "security-specialist.md",
+      "status": "active"
     }
   ]
 }
